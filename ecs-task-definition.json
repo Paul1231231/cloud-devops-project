@@ -1,0 +1,41 @@
+{
+  "family": "cloud-devops-task-api",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::682033495018:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "cloud-devops-task-api",
+      "image": "682033495018.dkr.ecr.ap-northeast-1.amazonaws.com/cloud-devops-task-api:day3-20261112203602",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "PYTHONUNBUFFERED",
+          "value": "1"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:682033495018:secret:cloud-devops-task-api/database-url-6Pjfrc"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/cloud-devops-task-api",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
